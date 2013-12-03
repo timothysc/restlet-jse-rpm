@@ -1,0 +1,327 @@
+
+This is a review *template*. Besides handling the [ ]-marked tests you are
+also supposed to fix the template before pasting into bugzilla:
+- Add issues you find to the list of issues on top. If there isn't such
+  a list, create one.
+- Add your own remarks to the template checks.
+- Add new lines marked [!] or [?] when you discover new things not
+  listed by fedora-review.
+- Change or remove any text in the template which is plain wrong. In this
+  case you could also file a bug against fedora-review
+- Remove the "[ ] Manual check required", you will not have any such lines
+  in what you paste.
+- Remove attachments which you deem not really useful (the rpmlint
+  ones are mandatory, though)
+- Remove this text
+
+
+
+Package Review
+==============
+
+Legend:
+[x] = Pass, [!] = Fail, [-] = Not applicable, [?] = Not evaluated
+[ ] = Manual review needed
+
+
+
+===== MUST items =====
+
+Generic:
+[!]: Package is licensed with an open-source compatible license and meets
+     other legal requirements as defined in the legal section of Packaging
+     Guidelines.
+
+--- Notes ---
+So currently the license indicates (ASL 2.0 and CDDL and EPL and LGPLv2+ and LGPLv3+) but it should read
+as (ASL 2.0 or CDDL or EPL or LGPLv2+ or LGPLv3+). 
+
+https://fedoraproject.org/wiki/Packaging:LicensingGuidelines#Dual_Licensing_Scenarios
+
+**
+ * Copyright 2005-2013 Restlet S.A.S.
+ * 
+ * The contents of this file are subject to the terms of one of the following
+ * open source licenses: Apache 2.0 or LGPL 3.0 or LGPL 2.1 or CDDL 1.0 or EPL
+ * 1.0 (the "Licenses"). You can select the license that you prefer but you may
+ * not use this file except in compliance with one of these Licenses.
+
+--- EndNotes ---
+
+[!]: License field in the package spec file matches the actual license.
+     Note: Checking patched sources after %prep for licenses. Licenses found:
+     "Unknown or generated". 1624 files have unknown license. Detailed output
+     of licensecheck in /home/tstclair/work/spaces/solr/restlet-jse-rpm
+     /review-restlet-jse/licensecheck.txt
+     
+--- Notes ---
+Same comment as above.
+--- EndNotes ---
+     
+[x]: License file installed when any subpackage combination is installed.
+[!]: If the package is under multiple licenses, the licensing breakdown must
+     be documented in the spec.
+     
+--- Notes ---
+Same comment as above.
+--- EndNotes ---
+     
+[!]: Package contains no bundled libraries without FPC exception.
+
+--- Notes ---
+Currently the restlet-jse-create-tarball.sh downloads srcs for other elements which are not part of the primary.
+Please indicate reason.
+--- EndNotes ---
+
+[x]: Changelog in prescribed format.
+[x]: Sources contain only permissible code or content.
+[-]: Package contains desktop file if it is a GUI application.
+[-]: Development files must be in a -devel package
+[x]: Package uses nothing in %doc for runtime.
+[x]: Package consistently uses macros (instead of hard-coded directory names).
+[x]: Package is named according to the Package Naming Guidelines.
+[x]: Package does not generate any conflict.
+[-]: Package obeys FHS, except libexecdir and /usr/target.
+[-]: If the package is a rename of another package, proper Obsoletes and
+     Provides are present.
+[x]: Requires correct, justified where necessary.
+[x]: Spec file is legible and written in American English.
+[-]: Package contains systemd file(s) if in need.
+[-]: Package is not known to require an ExcludeArch tag.
+[-]: Large documentation must go in a -doc subpackage. Large could be size
+     (~1MB) or number of files.
+     Note: Documentation size is 133120 bytes in 5 files.
+[x]: Package complies to the Packaging Guidelines
+[x]: Package successfully compiles and builds into binary rpms on at least one
+     supported primary architecture.
+[x]: Package installs properly.
+[x]: Rpmlint is run on all rpms the build produces.
+     Note: There are rpmlint messages (see attachment).
+[x]: If (and only if) the source package includes the text of the license(s)
+     in its own file, then that file, containing the text of the license(s)
+     for the package is included in %doc.
+[x]: Package requires other packages for directories it uses.
+[x]: Package must own all directories that it creates.
+[x]: Package does not own files or directories owned by other packages.
+[x]: All build dependencies are listed in BuildRequires, except for any that
+     are listed in the exceptions section of Packaging Guidelines.
+[x]: Package uses either %{buildroot} or $RPM_BUILD_ROOT
+[x]: Package does not run rm -rf %{buildroot} (or $RPM_BUILD_ROOT) at the
+     beginning of %install.
+[x]: Each %files section contains %defattr if rpm < 4.4
+[x]: Macros in Summary, %description expandable at SRPM build time.
+[x]: Package does not contain duplicates in %files.
+[x]: Permissions on files are set properly.
+[x]: Package use %makeinstall only when make install' ' DESTDIR=... doesn't
+     work.
+[x]: Package is named using only allowed ASCII characters.
+[x]: Package do not use a name that already exist
+[x]: Package is not relocatable.
+[x]: Sources used to build the package match the upstream source, as provided
+     in the spec URL.
+[x]: Spec file name must match the spec package %{name}, in the format
+     %{name}.spec.
+[x]: File names are valid UTF-8.
+[x]: Packages must not store files under /srv, /opt or /usr/local
+
+Java:
+[x]: Packages have proper BuildRequires/Requires on jpackage-utils
+     Note: Maven packages do not need to (Build)Require jpackage-utils. It is
+     pulled in by maven-local
+[x]: Javadoc documentation files are generated and included in -javadoc
+     subpackage
+[x]: Javadoc subpackages should not have Requires: jpackage-utils
+[x]: Javadocs are placed in %{_javadocdir}/%{name} (no -%{version} symlink)
+[x]: Bundled jar/class files should be removed before build
+
+Maven:
+[x]: If package contains pom.xml files install it (including depmaps) even
+     when building with ant
+[x]: Pom files have correct Maven mapping
+[x]: Maven packages should use new style packaging
+[x]: Old add_to_maven_depmap macro is not being used
+[x]: Packages DOES NOT have Requires(post) and Requires(postun) on jpackage-
+     utils for %update_maven_depmap macro
+[x]: Package DOES NOT use %update_maven_depmap in %post/%postun
+[x]: Packages use %{_mavenpomdir} instead of %{_datadir}/maven2/poms
+
+===== SHOULD items =====
+
+Generic:
+[-]: If the source package does not include license text(s) as a separate file
+     from upstream, the packager SHOULD query upstream to include it.
+[x]: Final provides and requires are sane (see attachments).
+[-]: Fully versioned dependency in subpackages if applicable.
+     Note: No Requires: %{name}%{?_isa} = %{version}-%{release} in restlet-
+     jse-javadoc
+[x]: Package functions as described.
+[x]: Latest version is packaged.
+[x]: Package does not include license text files separate from upstream.
+[x]: Description and summary sections in the package spec file contains
+     translations for supported Non-English languages, if available.
+[-]: Package should compile and build into binary rpms on all supported
+     architectures.
+[-]: %check is present and all tests pass.
+[?]: Packages should try to preserve timestamps of original installed files.
+[x]: Packager, Vendor, PreReq, Copyright tags should not be in spec file
+[x]: Sources can be downloaded from URI in Source: tag
+[x]: Reviewer should test that the package builds in mock.
+[x]: Buildroot is not present
+[x]: Package has no %clean section with rm -rf %{buildroot} (or
+     $RPM_BUILD_ROOT)
+[x]: Dist tag is present (not strictly required in GL).
+[x]: No file requires outside of /etc, /bin, /sbin, /usr/bin, /usr/sbin.
+[x]: SourceX tarball generation or download is documented.
+[x]: SourceX is a working URL.
+[x]: Spec use %global instead of %define unless justified.
+
+Java:
+[x]: Package uses upstream build method (ant/maven/etc.)
+[x]: Packages are noarch unless they use JNI
+
+===== EXTRA items =====
+
+Generic:
+[x]: Rpmlint is run on all installed packages.
+     Note: No rpmlint messages.
+[x]: Large data in /usr/share should live in a noarch subpackage if package is
+     arched.
+[x]: Spec file according to URL is the same as in SRPM.
+
+
+Rpmlint
+-------
+Checking: restlet-jse-2.1.4-1.fc21.noarch.rpm
+          restlet-jse-javadoc-2.1.4-1.fc21.noarch.rpm
+          restlet-jse-2.1.4-1.fc21.src.rpm
+restlet-jse.src: W: strange-permission restlet-jse-create-tarball.sh 0775L
+
+--- Notes ---
+^ This is from me running the scripts
+--- End Notes---
+
+restlet-jse.src: W: invalid-url Source0: restlet-jse-2.1.4-clean.tar.xz
+
+--- Notes ---
+Expected given the generation.
+--- End Notes---
+
+3 packages and 0 specfiles checked; 0 errors, 2 warnings.
+
+
+
+
+Rpmlint (installed packages)
+----------------------------
+# rpmlint restlet-jse-javadoc restlet-jse
+2 packages and 0 specfiles checked; 0 errors, 0 warnings.
+# echo 'rpmlint-done:'
+
+
+
+Requires
+--------
+restlet-jse-javadoc (rpmlib, GLIBC filtered):
+    jpackage-utils
+
+restlet-jse (rpmlib, GLIBC filtered):
+    java
+    jpackage-utils
+    mvn(cglib:cglib)
+    mvn(com.sun.xml.bind:jaxb-impl)
+    mvn(com.thoughtworks.xstream:xstream)
+    mvn(commons-codec:commons-codec)
+    mvn(commons-collections:commons-collections)
+    mvn(commons-dbcp:commons-dbcp)
+    mvn(commons-fileupload:commons-fileupload)
+    mvn(commons-lang:commons-lang)
+    mvn(commons-logging:commons-logging)
+    mvn(commons-pool:commons-pool)
+    mvn(javax.mail:mail)
+    mvn(javax.xml.bind:jaxb-api)
+    mvn(javax.xml.stream:stax-api)
+    mvn(junit:junit)
+    mvn(net.jcip:jcip-annotations)
+    mvn(org.apache.httpcomponents:httpclient)
+    mvn(org.apache.httpcomponents:httpcore)
+    mvn(org.apache.httpcomponents:httpmime)
+    mvn(org.apache.james:apache-mime4j-core)
+    mvn(org.apache.velocity:velocity)
+    mvn(org.codehaus.jackson:jackson-core-asl)
+    mvn(org.codehaus.jackson:jackson-mapper-asl)
+    mvn(org.codehaus.jettison:jettison)
+    mvn(org.freemarker:freemarker)
+    mvn(org.jdom:jdom)
+    mvn(org.jibx:jibx-run)
+    mvn(org.jsslutils:jsslutils)
+    mvn(org.slf4j:slf4j-api)
+    mvn(org.springframework:spring-beans)
+    mvn(org.springframework:spring-context)
+    mvn(org.springframework:spring-core)
+    mvn(org.springframework:spring-expression)
+    mvn(org.springframework:spring-web)
+    mvn(org.springframework:spring-webmvc)
+    mvn(rome:rome)
+
+
+
+Provides
+--------
+restlet-jse-javadoc:
+    restlet-jse-javadoc
+
+restlet-jse:
+    mvn(org.restlet.jee:org.restlet)
+    mvn(org.restlet.jee:org.restlet.ext.atom)
+    mvn(org.restlet.jee:org.restlet.ext.crypto)
+    mvn(org.restlet.jee:org.restlet.ext.fileupload)
+    mvn(org.restlet.jee:org.restlet.ext.freemarker)
+    mvn(org.restlet.jee:org.restlet.ext.html)
+    mvn(org.restlet.jee:org.restlet.ext.httpclient)
+    mvn(org.restlet.jee:org.restlet.ext.jaas)
+    mvn(org.restlet.jee:org.restlet.ext.jackson)
+    mvn(org.restlet.jee:org.restlet.ext.javamail)
+    mvn(org.restlet.jee:org.restlet.ext.jaxb)
+    mvn(org.restlet.jee:org.restlet.ext.jdbc)
+    mvn(org.restlet.jee:org.restlet.ext.jibx)
+    mvn(org.restlet.jee:org.restlet.ext.net)
+    mvn(org.restlet.jee:org.restlet.ext.odata)
+    mvn(org.restlet.jee:org.restlet.ext.rdf)
+    mvn(org.restlet.jee:org.restlet.ext.rome)
+    mvn(org.restlet.jee:org.restlet.ext.servlet)
+    mvn(org.restlet.jee:org.restlet.ext.sip)
+    mvn(org.restlet.jee:org.restlet.ext.slf4j)
+    mvn(org.restlet.jee:org.restlet.ext.spring)
+    mvn(org.restlet.jee:org.restlet.ext.ssl)
+    mvn(org.restlet.jee:org.restlet.ext.velocity)
+    mvn(org.restlet.jee:org.restlet.ext.wadl)
+    mvn(org.restlet.jee:org.restlet.ext.xdb)
+    mvn(org.restlet.jee:org.restlet.ext.xml)
+    mvn(org.restlet.jee:org.restlet.ext.xstream)
+    mvn(org.restlet.jee:org.restlet.parent)
+    mvn(org.restlet.jee:org.restlet.parent:pom:)
+    restlet-jse
+
+
+
+Source checksums
+----------------
+http://maven.restlet.org/org/restlet/jee/org.restlet.parent/2.1.4/org.restlet.parent-2.1.4.pom :
+  CHECKSUM(SHA256) this package     : 879cc1ece659509749f4fbdba13b14f88104df73bfb19144c6736be5cf2a51ed
+  CHECKSUM(SHA256) upstream package : 879cc1ece659509749f4fbdba13b14f88104df73bfb19144c6736be5cf2a51ed
+Using local file /home/tstclair/work/spaces/solr/restlet-jse-rpm/restlet-jse-2.1.4-clean.tar.xz as upstream
+file:///home/tstclair/work/spaces/solr/restlet-jse-rpm/restlet-jse-2.1.4-clean.tar.xz :
+  CHECKSUM(SHA256) this package     : 7e723e01ac1745c18e65ece97c57f91e841ad72417dbfa2f176f2b963d017477
+  CHECKSUM(SHA256) upstream package : 7e723e01ac1745c18e65ece97c57f91e841ad72417dbfa2f176f2b963d017477
+Using local file /home/tstclair/work/spaces/solr/restlet-jse-rpm/restlet-jse-create-tarball.sh as upstream
+file:///home/tstclair/work/spaces/solr/restlet-jse-rpm/restlet-jse-create-tarball.sh :
+  CHECKSUM(SHA256) this package     : f3197ca205cb653d7adf56000546989d63459bf36da879e20754bdc8b2fe8379
+  CHECKSUM(SHA256) upstream package : f3197ca205cb653d7adf56000546989d63459bf36da879e20754bdc8b2fe8379
+
+
+Generated by fedora-review 0.5.0 (920221d) last change: 2013-08-30
+Command line :/usr/bin/fedora-review -m fedora-rawhide-x86_64 -n restlet-jse
+Buildroot used: fedora-rawhide-x86_64
+Active plugins: Generic, Shell-api, Java
+Disabled plugins: C/C++, Python, SugarActivity, Perl, R, PHP, Ruby
+Disabled flags: EPEL5, EXARCH, DISTTAG
