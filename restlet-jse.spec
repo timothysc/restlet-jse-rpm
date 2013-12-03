@@ -7,6 +7,7 @@ URL:           http://restlet.org/
 # sh restlet-jse-create-tarball.sh < VERSION >
 Source0:       %{name}-%{version}-clean.tar.xz
 Source1:       %{name}-create-tarball.sh
+Source2:       http://maven.restlet.org/org/restlet/jee/org.restlet.parent/%{version}/org.restlet.parent-%{version}.pom
 
 BuildRequires: java-devel
 BuildRequires: mvn(cglib:cglib)
@@ -65,6 +66,7 @@ This package contains javadoc for %{name}.
 
 %prep
 %setup -q
+cp -p %{SOURCE2} pom.xml
 # Require org.restlet.lib.com.db4o*
 %pom_disable_module org.restlet.example
 # Require org.json:json:2.0
@@ -92,6 +94,8 @@ This package contains javadoc for %{name}.
 %pom_xpath_set "pom:project/pom:dependencies/pom:dependency[pom:groupId = 'cglib' ]/pom:artifactId" cglib org.restlet.ext.spring
 
 sed -i 's/\r//' changes.txt readme.txt
+
+
 
 %build
 

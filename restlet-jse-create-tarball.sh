@@ -21,8 +21,12 @@ rm -Rf ./${NAME}-${VERSION}/lib
 find ./${NAME}-${VERSION} -name "*.jar" -delete
 find ./${NAME}-${VERSION} -name "*.class" -delete
 cd ./${NAME}-${VERSION}
+
+#wget http://maven.restlet.org/org/restlet/jee/org.restlet.parent/${VERSION}/org.restlet.parent-${VERSION}.pom
+#mv org.restlet.parent-${VERSION}.pom pom.xml
+
 mv src/* .
-wget -O pom.xml http://maven.restlet.org/org/restlet/jee/org.restlet.parent/${VERSION}/org.restlet.parent-${VERSION}.pom
+
 for m in org.restlet \
  org.restlet.example \
  org.restlet.ext.atom \
